@@ -529,7 +529,8 @@ function KeyboardSettings(props: KeyboardSettingsProps) {
                   </div>
                 </div>
               )}
-              {SuperOverlapThreshold >= 0 && (
+              {/* disabled the super overlap threshold as it seems to do nothing for the superkeys */}
+              {false && SuperOverlapThreshold >= 0 && (
                 <div className="w-full">
                   <div className="w-full flex gap-2">
                     <div className="w-full">
