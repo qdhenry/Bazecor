@@ -206,11 +206,13 @@ class KeymapDEFY extends React.Component {
     const getLabel = (row, col) => keymap[keyIndex(row, col)];
 
     // Get custom label from KeyLabelsContext (passed as prop from LayoutEditor)
-    const { getLabel: getCustomLabel, layer: currentLayerIndex } = this.props;
+    const { getLabel: getCustomLabel, layer: currentLayerIndex, displaySettings } = this.props;
     const getKeyCustomLabel = (row, col) => {
       if (!getCustomLabel) return undefined;
       return getCustomLabel(keyIndex(row, col), currentLayerIndex);
     };
+    const showLabelOnKey = displaySettings?.showLabelsOnKeys ?? false;
+    const labelDisplayProps = { showLabelOnKey, labelDisplaySettings: displaySettings };
 
     const isSelected = (row, col) => {
       const selectIndex = keyIndex(row, col);
@@ -429,6 +431,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 0, 0, 0, true)}
             keyCode={getLabel(0, 0).keyCode}
             customLabel={getKeyCustomLabel(0, 0)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 0)}
           />
           </KeyContextMenu>
@@ -453,6 +456,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 1, 0, 0, true)}
             keyCode={getLabel(0, 1).keyCode}
             customLabel={getKeyCustomLabel(0, 1)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 1)}
           />
           </KeyContextMenu>
@@ -477,6 +481,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 2, 0, 0, true)}
             keyCode={getLabel(0, 2).keyCode}
             customLabel={getKeyCustomLabel(0, 2)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 2)}
           />
           </KeyContextMenu>
@@ -501,6 +506,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 3, 0, 0, true)}
             keyCode={getLabel(0, 3).keyCode}
             customLabel={getKeyCustomLabel(0, 3)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 3)}
           />
           </KeyContextMenu>
@@ -525,6 +531,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 4, 0, 0, true)}
             keyCode={getLabel(0, 4).keyCode}
             customLabel={getKeyCustomLabel(0, 4)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 4)}
           />
           </KeyContextMenu>
@@ -549,6 +556,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 5, 0, 0, true)}
             keyCode={getLabel(0, 5).keyCode}
             customLabel={getKeyCustomLabel(0, 5)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 5)}
           />
           </KeyContextMenu>
@@ -574,6 +582,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 6, 0, 0, true)}
             keyCode={getLabel(0, 6).keyCode}
             customLabel={getKeyCustomLabel(0, 6)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 6)}
           />
           </KeyContextMenu>
@@ -599,6 +608,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 9, 0, 0, true)}
             keyCode={getLabel(0, 9).keyCode}
             customLabel={getKeyCustomLabel(0, 9)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 9)}
           />
           </KeyContextMenu>
@@ -623,6 +633,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 10, 0, 0, true)}
             keyCode={getLabel(0, 10).keyCode}
             customLabel={getKeyCustomLabel(0, 10)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 10)}
           />
           </KeyContextMenu>
@@ -647,6 +658,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 11, 0, 0, true)}
             keyCode={getLabel(0, 11).keyCode}
             customLabel={getKeyCustomLabel(0, 11)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 11)}
           />
           </KeyContextMenu>
@@ -671,6 +683,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 12, 0, 0, true)}
             keyCode={getLabel(0, 12).keyCode}
             customLabel={getKeyCustomLabel(0, 12)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 12)}
           />
           </KeyContextMenu>
@@ -696,6 +709,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 13, 0, 0, true)}
             keyCode={getLabel(0, 13).keyCode}
             customLabel={getKeyCustomLabel(0, 13)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 13)}
           />
           </KeyContextMenu>
@@ -721,6 +735,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 14, 0, 0, true)}
             keyCode={getLabel(0, 14).keyCode}
             customLabel={getKeyCustomLabel(0, 14)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 14)}
           />
           </KeyContextMenu>
@@ -746,6 +761,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(0, 15, 0, 0, true)}
             keyCode={getLabel(0, 15).keyCode}
             customLabel={getKeyCustomLabel(0, 15)}
+            {...labelDisplayProps}
             selectedKey={getLabel(0, 15)}
           />
           </KeyContextMenu>
@@ -771,6 +787,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 0, 0, 0, true)}
             keyCode={getLabel(1, 0).keyCode}
             customLabel={getKeyCustomLabel(1, 0)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 0)}
           />
           </KeyContextMenu>
@@ -795,6 +812,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 1, 0, 0, true)}
             keyCode={getLabel(1, 1).keyCode}
             customLabel={getKeyCustomLabel(1, 1)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 1)}
           />
           </KeyContextMenu>
@@ -819,6 +837,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 2, 0, 0, true)}
             keyCode={getLabel(1, 2).keyCode}
             customLabel={getKeyCustomLabel(1, 2)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 2)}
           />
           </KeyContextMenu>
@@ -843,6 +862,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 3, 0, 0, true)}
             keyCode={getLabel(1, 3).keyCode}
             customLabel={getKeyCustomLabel(1, 3)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 3)}
           />
           </KeyContextMenu>
@@ -867,6 +887,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 4, 0, 0, true)}
             keyCode={getLabel(1, 4).keyCode}
             customLabel={getKeyCustomLabel(1, 4)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 4)}
           />
           </KeyContextMenu>
@@ -892,6 +913,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 5, 0, 0, true)}
             keyCode={getLabel(1, 5).keyCode}
             customLabel={getKeyCustomLabel(1, 5)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 5)}
           />
           </KeyContextMenu>
@@ -916,6 +938,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 6, 0, 0, true)}
             keyCode={getLabel(1, 6).keyCode}
             customLabel={getKeyCustomLabel(1, 6)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 6)}
           />
           </KeyContextMenu>
@@ -941,6 +964,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 9, 0, 0, true)}
             keyCode={getLabel(1, 9).keyCode}
             customLabel={getKeyCustomLabel(1, 9)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 9)}
           />
           </KeyContextMenu>
@@ -965,6 +989,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 10, 0, 0, true)}
             keyCode={getLabel(1, 10).keyCode}
             customLabel={getKeyCustomLabel(1, 10)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 10)}
           />
           </KeyContextMenu>
@@ -989,6 +1014,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 11, 0, 0, true)}
             keyCode={getLabel(1, 11).keyCode}
             customLabel={getKeyCustomLabel(1, 11)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 11)}
           />
           </KeyContextMenu>
@@ -1013,6 +1039,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 12, 0, 0, true)}
             keyCode={getLabel(1, 12).keyCode}
             customLabel={getKeyCustomLabel(1, 12)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 12)}
           />
           </KeyContextMenu>
@@ -1038,6 +1065,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 13, 0, 0, true)}
             keyCode={getLabel(1, 13).keyCode}
             customLabel={getKeyCustomLabel(1, 13)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 13)}
           />
           </KeyContextMenu>
@@ -1063,6 +1091,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 14, 0, 0, true)}
             keyCode={getLabel(1, 14).keyCode}
             customLabel={getKeyCustomLabel(1, 14)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 14)}
           />
           </KeyContextMenu>
@@ -1088,6 +1117,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(1, 15, 0, 0, true)}
             keyCode={getLabel(1, 15).keyCode}
             customLabel={getKeyCustomLabel(1, 15)}
+            {...labelDisplayProps}
             selectedKey={getLabel(1, 15)}
           />
           </KeyContextMenu>
@@ -1113,6 +1143,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 0, 0, 0, true)}
             keyCode={getLabel(2, 0).keyCode}
             customLabel={getKeyCustomLabel(2, 0)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 0)}
           />
           </KeyContextMenu>
@@ -1137,6 +1168,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 1, 0, 0, true)}
             keyCode={getLabel(2, 1).keyCode}
             customLabel={getKeyCustomLabel(2, 1)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 1)}
           />
           </KeyContextMenu>
@@ -1161,6 +1193,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 2, 0, 0, true)}
             keyCode={getLabel(2, 2).keyCode}
             customLabel={getKeyCustomLabel(2, 2)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 2)}
           />
           </KeyContextMenu>
@@ -1185,6 +1218,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 3, 0, 0, true)}
             keyCode={getLabel(2, 3).keyCode}
             customLabel={getKeyCustomLabel(2, 3)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 3)}
           />
           </KeyContextMenu>
@@ -1209,6 +1243,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 4, 0, 0, true)}
             keyCode={getLabel(2, 4).keyCode}
             customLabel={getKeyCustomLabel(2, 4)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 4)}
           />
           </KeyContextMenu>
@@ -1234,6 +1269,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 5, 0, 0, true)}
             keyCode={getLabel(2, 5).keyCode}
             customLabel={getKeyCustomLabel(2, 5)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 5)}
           />
           </KeyContextMenu>
@@ -1259,6 +1295,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 6, 0, 0, true)}
             keyCode={getLabel(2, 6).keyCode}
             customLabel={getKeyCustomLabel(2, 6)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 6)}
           />
           </KeyContextMenu>
@@ -1284,6 +1321,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 9, 0, 0, true)}
             keyCode={getLabel(2, 9).keyCode}
             customLabel={getKeyCustomLabel(2, 9)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 9)}
           />
           </KeyContextMenu>
@@ -1309,6 +1347,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 10, 0, 0, true)}
             keyCode={getLabel(2, 10).keyCode}
             customLabel={getKeyCustomLabel(2, 10)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 10)}
           />
           </KeyContextMenu>
@@ -1334,6 +1373,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 11, 0, 0, true)}
             keyCode={getLabel(2, 11).keyCode}
             customLabel={getKeyCustomLabel(2, 11)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 11)}
           />
           </KeyContextMenu>
@@ -1359,6 +1399,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 12, 0, 0, true)}
             keyCode={getLabel(2, 12).keyCode}
             customLabel={getKeyCustomLabel(2, 12)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 12)}
           />
           </KeyContextMenu>
@@ -1384,6 +1425,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 13, 0, 0, true)}
             keyCode={getLabel(2, 13).keyCode}
             customLabel={getKeyCustomLabel(2, 13)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 13)}
           />
           </KeyContextMenu>
@@ -1409,6 +1451,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 14, 0, 0, true)}
             keyCode={getLabel(2, 14).keyCode}
             customLabel={getKeyCustomLabel(2, 14)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 14)}
           />
           </KeyContextMenu>
@@ -1434,6 +1477,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(2, 15, 0, 0, true)}
             keyCode={getLabel(2, 15).keyCode}
             customLabel={getKeyCustomLabel(2, 15)}
+            {...labelDisplayProps}
             selectedKey={getLabel(2, 15)}
           />
           </KeyContextMenu>
@@ -1459,6 +1503,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 0, 0, 0, true)}
             keyCode={getLabel(3, 0).keyCode}
             customLabel={getKeyCustomLabel(3, 0)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 0)}
           />
           </KeyContextMenu>
@@ -1484,6 +1529,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 1, 0, 0, true)}
             keyCode={getLabel(3, 1).keyCode}
             customLabel={getKeyCustomLabel(3, 1)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 1)}
           />
           </KeyContextMenu>
@@ -1509,6 +1555,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 2, 0, 0, true)}
             keyCode={getLabel(3, 2).keyCode}
             customLabel={getKeyCustomLabel(3, 2)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 2)}
           />
           </KeyContextMenu>
@@ -1534,6 +1581,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 3, 0, 0, true)}
             keyCode={getLabel(3, 3).keyCode}
             customLabel={getKeyCustomLabel(3, 3)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 3)}
           />
           </KeyContextMenu>
@@ -1559,6 +1607,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 4, 0, 0, true)}
             keyCode={getLabel(3, 4).keyCode}
             customLabel={getKeyCustomLabel(3, 4)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 4)}
           />
           </KeyContextMenu>
@@ -1584,6 +1633,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 5, 0, 0, true)}
             keyCode={getLabel(3, 5).keyCode}
             customLabel={getKeyCustomLabel(3, 5)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 5)}
           />
           </KeyContextMenu>
@@ -1609,6 +1659,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 10, 0, 0, true)}
             keyCode={getLabel(3, 10).keyCode}
             customLabel={getKeyCustomLabel(3, 10)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 10)}
           />
           </KeyContextMenu>
@@ -1634,6 +1685,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 11, 0, 0, true)}
             keyCode={getLabel(3, 11).keyCode}
             customLabel={getKeyCustomLabel(3, 11)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 11)}
           />
           </KeyContextMenu>
@@ -1659,6 +1711,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 12, 0, 0, true)}
             keyCode={getLabel(3, 12).keyCode}
             customLabel={getKeyCustomLabel(3, 12)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 12)}
           />
           </KeyContextMenu>
@@ -1684,6 +1737,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 13, 0, 0, true)}
             keyCode={getLabel(3, 13).keyCode}
             customLabel={getKeyCustomLabel(3, 13)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 13)}
           />
           </KeyContextMenu>
@@ -1709,6 +1763,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 14, 0, 0, true)}
             keyCode={getLabel(3, 14).keyCode}
             customLabel={getKeyCustomLabel(3, 14)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 14)}
           />
           </KeyContextMenu>
@@ -1734,6 +1789,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(3, 15, 0, 0, true)}
             keyCode={getLabel(3, 15).keyCode}
             customLabel={getKeyCustomLabel(3, 15)}
+            {...labelDisplayProps}
             selectedKey={getLabel(3, 15)}
           />
           </KeyContextMenu>
@@ -1765,6 +1821,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 0, 0, 0, true)}
             keyCode={getLabel(4, 0).keyCode}
             customLabel={getKeyCustomLabel(4, 0)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 0)}
           />
           </KeyContextMenu>
@@ -1790,6 +1847,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 1, 0, 0, true)}
             keyCode={getLabel(4, 1).keyCode}
             customLabel={getKeyCustomLabel(4, 1)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 1)}
           />
           </KeyContextMenu>
@@ -1813,6 +1871,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 2, 0, 0, true)}
             keyCode={getLabel(4, 2).keyCode}
             customLabel={getKeyCustomLabel(4, 2)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 2)}
           />
           </KeyContextMenu>
@@ -1837,6 +1896,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 3, 0, 0, true)}
             keyCode={getLabel(4, 3).keyCode}
             customLabel={getKeyCustomLabel(4, 3)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 3)}
           />
           </KeyContextMenu>
@@ -1861,6 +1921,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 4, 0, 0, true)}
             keyCode={getLabel(4, 4).keyCode}
             customLabel={getKeyCustomLabel(4, 4)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 4)}
           />
           </KeyContextMenu>
@@ -1885,6 +1946,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 7, 0, 0, true)}
             keyCode={getLabel(4, 7).keyCode}
             customLabel={getKeyCustomLabel(4, 7)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 7)}
           />
           </KeyContextMenu>
@@ -1909,6 +1971,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 6, 0, 0, true)}
             keyCode={getLabel(4, 6).keyCode}
             customLabel={getKeyCustomLabel(4, 6)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 6)}
           />
           </KeyContextMenu>
@@ -1933,6 +1996,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 5, 0, 0, true)}
             keyCode={getLabel(4, 5).keyCode}
             customLabel={getKeyCustomLabel(4, 5)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 5)}
           />
           </KeyContextMenu>
@@ -1960,6 +2024,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 15, 0, 0, true)}
             keyCode={getLabel(4, 15).keyCode}
             customLabel={getKeyCustomLabel(4, 15)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 15)}
           />
           </KeyContextMenu>
@@ -1985,6 +2050,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 14, 0, 0, true)}
             keyCode={getLabel(4, 14).keyCode}
             customLabel={getKeyCustomLabel(4, 14)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 14)}
           />
           </KeyContextMenu>
@@ -2010,6 +2076,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 13, 0, 0, true)}
             keyCode={getLabel(4, 13).keyCode}
             customLabel={getKeyCustomLabel(4, 13)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 13)}
           />
           </KeyContextMenu>
@@ -2035,6 +2102,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 12, 0, 0, true)}
             keyCode={getLabel(4, 12).keyCode}
             customLabel={getKeyCustomLabel(4, 12)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 12)}
           />
           </KeyContextMenu>
@@ -2060,6 +2128,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 8, 0, 0, true)}
             keyCode={getLabel(4, 8).keyCode}
             customLabel={getKeyCustomLabel(4, 8)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 8)}
           />
           </KeyContextMenu>
@@ -2085,6 +2154,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 9, 0, 0, true)}
             keyCode={getLabel(4, 9).keyCode}
             customLabel={getKeyCustomLabel(4, 9)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 9)}
           />
           </KeyContextMenu>
@@ -2110,6 +2180,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 10, 0, 0, true)}
             keyCode={getLabel(4, 10).keyCode}
             customLabel={getKeyCustomLabel(4, 10)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 10)}
           />
           </KeyContextMenu>
@@ -2135,6 +2206,7 @@ class KeymapDEFY extends React.Component {
             centerExtra={getCenterExtra(4, 11, 0, 0, true)}
             keyCode={getLabel(4, 11).keyCode}
             customLabel={getKeyCustomLabel(4, 11)}
+            {...labelDisplayProps}
             selectedKey={getLabel(4, 11)}
           />
           </KeyContextMenu>
