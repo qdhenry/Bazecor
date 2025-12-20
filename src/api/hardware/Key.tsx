@@ -21,6 +21,15 @@ import React, { useState, useEffect } from "react";
 import ListModifiersKey from "@Renderer/components/molecules/ListModifiers/ListModifiersKey";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@Renderer/components/atoms/Tooltip";
 
+interface LabelDisplaySettings {
+  maxCharacters: number;
+  fontSize: number;
+  displayMode: "truncate" | "multiline";
+  labelColor: string;
+  backgroundLabelColor: string;
+  backgroundLabelOpacity: number;
+}
+
 interface KeyShapeProps {
   keyType: string;
   id: string;
@@ -40,7 +49,24 @@ interface KeyShapeProps {
   keyCode: number;
   hidden?: boolean;
   customLabel?: string;
+  showLabelOnKey?: boolean;
+  labelDisplaySettings?: LabelDisplaySettings;
 }
+
+// Helper function to truncate labels
+const truncateLabel = (label: string, maxChars: number): string => {
+  if (label.length <= maxChars) return label;
+  return `${label.substring(0, maxChars - 1)}…`;
+};
+
+// Helper function to convert hex color to rgba with opacity
+const hexToRgba = (hex: string, opacity: number): string => {
+  const cleanHex = hex.replace("#", "");
+  const r = parseInt(cleanHex.substring(0, 2), 16);
+  const g = parseInt(cleanHex.substring(2, 4), 16);
+  const b = parseInt(cleanHex.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+};
 
 function Key(props: KeyShapeProps) {
   const {
@@ -62,7 +88,47 @@ function Key(props: KeyShapeProps) {
     keyCode,
     hidden,
     customLabel,
+    showLabelOnKey,
+    labelDisplaySettings,
   } = props;
+
+  // Get display settings with defaults
+  const maxChars = labelDisplaySettings?.maxCharacters ?? 20;
+  const fontSize = labelDisplaySettings?.fontSize ?? 8;
+  const displayMode = labelDisplaySettings?.displayMode ?? "multiline";
+  const bgColor = labelDisplaySettings?.backgroundLabelColor ?? "#000000";
+  const bgOpacity = labelDisplaySettings?.backgroundLabelOpacity ?? 0.4;
+
+  // Custom label element for on-key display - centered overlay with blur
+  const customLabelElement = showLabelOnKey && customLabel && (
+    <div
+      className="customLabelOnKey"
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        fontSize: `${fontSize}px`,
+        lineHeight: "1.2",
+        color: labelDisplaySettings?.labelColor || "#a855f7",
+        fontWeight: 600,
+        textAlign: "center",
+        padding: "2px 6px",
+        borderRadius: "3px",
+        backgroundColor: hexToRgba(bgColor, bgOpacity),
+        backdropFilter: "blur(4px)",
+        WebkitBackdropFilter: "blur(4px)",
+        maxWidth: "calc(100% + 20px)",
+        overflow: "hidden",
+        whiteSpace: displayMode === "truncate" ? "nowrap" : "normal",
+        textOverflow: displayMode === "truncate" ? "ellipsis" : "clip",
+        wordWrap: "break-word",
+      }}
+    >
+      {truncateLabel(customLabel, maxChars)}
+    </div>
+  );
+
   const xShape2 = x + 4;
   const yShape2 = y;
   const widthShape2 = width - 8;
@@ -152,6 +218,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={x} y={y} width={width + 6} height={height}>
@@ -256,6 +323,7 @@ function Key(props: KeyShapeProps) {
                 <li className="extraLabel">{centerExtra}</li>
                 <li className="labelClass">{centerPrimary}</li>
               </ul>
+              {customLabelElement}
             </div>
           </foreignObject>
           <foreignObject x={40} y={1} width={widthShape2 - 52} height={height}>
@@ -351,6 +419,7 @@ function Key(props: KeyShapeProps) {
                 <li className="extraLabel">{centerExtra}</li>
                 <li className="labelClass">{centerPrimary}</li>
               </ul>
+              {customLabelElement}
             </div>
           </foreignObject>
           <foreignObject x={0} y={1} width={width - 52} height={height}>
@@ -456,6 +525,7 @@ function Key(props: KeyShapeProps) {
                 <li className="extraLabel">{centerExtra}</li>
                 <li className="labelClass">{centerPrimary}</li>
               </ul>
+              {customLabelElement}
             </div>
           </foreignObject>
           <foreignObject x={0} y={1} width={width} height={60}>
@@ -553,6 +623,7 @@ function Key(props: KeyShapeProps) {
                 <li className="extraLabel">{centerExtra}</li>
                 <li className="labelClass">{centerPrimary}</li>
               </ul>
+              {customLabelElement}
             </div>
           </foreignObject>
           <foreignObject x={0} y={1} width={width} height={height}>
@@ -650,6 +721,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -747,6 +819,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -845,6 +918,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -942,6 +1016,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={12} y={1} width={width} height={height}>
@@ -1039,6 +1114,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1136,6 +1212,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1233,6 +1310,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1330,6 +1408,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1427,6 +1506,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1524,6 +1604,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1621,6 +1702,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1718,6 +1800,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1815,6 +1898,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -1912,6 +1996,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
@@ -2009,6 +2094,7 @@ function Key(props: KeyShapeProps) {
                   <li className="extraLabel">{centerExtra}</li>
                   <li className="labelClass">{centerPrimary}</li>
                 </ul>
+                {customLabelElement}
               </div>
             </foreignObject>
             <foreignObject x={0} y={1} width={width} height={height}>
