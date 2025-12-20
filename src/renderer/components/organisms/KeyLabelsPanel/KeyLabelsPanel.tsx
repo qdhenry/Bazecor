@@ -22,6 +22,8 @@ import { Download, Upload, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@Renderer/components/atoms/Dialog";
 import { Button } from "@Renderer/components/atoms/Button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@Renderer/components/atoms/Select";
+import { Label } from "@Renderer/components/atoms/Label";
+import { Slider } from "@Renderer/components/atoms/slider";
 import { useKeyLabels } from "@Renderer/contexts/KeyLabelsContext";
 import { KeyLabelsStore, GLOBAL_LAYER, MAX_LABEL_LENGTH } from "@Types/keyLabels";
 import ToastMessage from "@Renderer/components/atoms/ToastMessage";
@@ -34,7 +36,7 @@ interface KeyLabelsPanelProps {
 }
 
 function KeyLabelsPanel({ open, onOpenChange, deviceId, totalLayers }: KeyLabelsPanelProps) {
-  const { labels, setLabel, removeLabel, importLabels, exportLabels } = useKeyLabels();
+  const { labels, setLabel, removeLabel, importLabels, exportLabels, displaySettings, setDisplaySettings } = useKeyLabels();
   const [selectedLayer, setSelectedLayer] = useState<number | "all">("all");
   const [editingKey, setEditingKey] = useState<{ keyPosition: number; layer: number } | null>(null);
   const [editValue, setEditValue] = useState("");
@@ -193,6 +195,99 @@ function KeyLabelsPanel({ open, onOpenChange, deviceId, totalLayers }: KeyLabels
               >
                 Export
               </Button>
+            </div>
+          </div>
+
+          {/* Display Settings */}
+          <div className="border border-gray-200 dark:border-gray-600 rounded-md p-4 space-y-4">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Display Settings</h3>
+
+            <div className="grid grid-cols-2 gap-4">
+              {/* Font Size */}
+              <div className="space-y-2">
+                <Label htmlFor="fontSize">Font Size: {displaySettings.fontSize}px</Label>
+                <Slider
+                  id="fontSize"
+                  min={6}
+                  max={14}
+                  step={1}
+                  value={[displaySettings.fontSize]}
+                  onValueChange={([value]) => setDisplaySettings({ fontSize: value })}
+                />
+              </div>
+
+              {/* Max Characters */}
+              <div className="space-y-2">
+                <Label htmlFor="maxChars">Max Characters: {displaySettings.maxCharacters}</Label>
+                <Slider
+                  id="maxChars"
+                  min={5}
+                  max={50}
+                  step={5}
+                  value={[displaySettings.maxCharacters]}
+                  onValueChange={([value]) => setDisplaySettings({ maxCharacters: value })}
+                />
+              </div>
+
+              {/* Display Mode */}
+              <div className="space-y-2">
+                <Label>Display Mode</Label>
+                <Select
+                  value={displaySettings.displayMode}
+                  onValueChange={(value: "truncate" | "multiline") => setDisplaySettings({ displayMode: value })}
+                >
+                  <SelectTrigger variant="default" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="multiline">Multiline (wrap text)</SelectItem>
+                    <SelectItem value="truncate">Truncate (ellipsis)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Label Color */}
+              <div className="space-y-2">
+                <Label htmlFor="labelColor">Label Color</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    id="labelColor"
+                    value={displaySettings.labelColor}
+                    onChange={e => setDisplaySettings({ labelColor: e.target.value })}
+                    className="w-10 h-10 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-500 dark:text-gray-400">{displaySettings.labelColor}</span>
+                </div>
+              </div>
+
+              {/* Background Color */}
+              <div className="space-y-2">
+                <Label htmlFor="backgroundLabelColor">Background Color</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    id="backgroundLabelColor"
+                    value={displaySettings.backgroundLabelColor}
+                    onChange={e => setDisplaySettings({ backgroundLabelColor: e.target.value })}
+                    className="w-10 h-10 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-500 dark:text-gray-400">{displaySettings.backgroundLabelColor}</span>
+                </div>
+              </div>
+
+              {/* Background Opacity */}
+              <div className="space-y-2">
+                <Label htmlFor="backgroundOpacity">Background Opacity: {Math.round(displaySettings.backgroundLabelOpacity * 100)}%</Label>
+                <Slider
+                  id="backgroundOpacity"
+                  min={0}
+                  max={100}
+                  step={5}
+                  value={[Math.round(displaySettings.backgroundLabelOpacity * 100)]}
+                  onValueChange={([value]) => setDisplaySettings({ backgroundLabelOpacity: value / 100 })}
+                />
+              </div>
             </div>
           </div>
 
