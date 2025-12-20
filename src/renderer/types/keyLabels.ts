@@ -20,10 +20,31 @@ export interface KeyLabel {
   label: string;
 }
 
+export interface KeyLabelDisplaySettings {
+  showLabelsOnKeys: boolean;
+  maxCharacters: number;
+  fontSize: number;
+  displayMode: "truncate" | "multiline";
+  labelColor: string;
+  backgroundLabelColor: string;
+  backgroundLabelOpacity: number;
+}
+
+export const DEFAULT_DISPLAY_SETTINGS: KeyLabelDisplaySettings = {
+  showLabelsOnKeys: false,
+  maxCharacters: 20,
+  fontSize: 8,
+  displayMode: "multiline",
+  labelColor: "#a855f7",
+  backgroundLabelColor: "#000000",
+  backgroundLabelOpacity: 0.4,
+};
+
 export interface KeyLabelsStore {
   version: 1;
   deviceId: string;
   labels: KeyLabel[];
+  displaySettings?: KeyLabelDisplaySettings;
 }
 
 export const MAX_LABEL_LENGTH = 50;
