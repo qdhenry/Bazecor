@@ -33,7 +33,8 @@ import { useDevice } from "@Renderer/DeviceContext";
 import { KeyLabelsProvider, useKeyLabels } from "@Renderer/contexts/KeyLabelsContext";
 import { KeyLabelDialogProvider } from "@Renderer/components/molecules/KeyContextMenu";
 import KeyLabelsPanel from "@Renderer/components/organisms/KeyLabelsPanel";
-import { Tag } from "lucide-react";
+import { Tag, Eye } from "lucide-react";
+import { Toggle } from "@Renderer/components/atoms/Toggle";
 
 // Types
 import { LayerType, Neuron } from "@Renderer/types/neurons";
@@ -83,10 +84,36 @@ interface KeyboardLayerWithLabelsProps {
 }
 
 function KeyboardLayerWithLabels({ Layer, layerProps, currentLayer }: KeyboardLayerWithLabelsProps) {
-  const { getLabel } = useKeyLabels();
+  const { getLabel, displaySettings } = useKeyLabels();
   return (
     <div className="LayerHolder">
-      <Layer {...layerProps} getLabel={getLabel} layer={currentLayer} />
+      <Layer {...layerProps} getLabel={getLabel} displaySettings={displaySettings} layer={currentLayer} />
+    </div>
+  );
+}
+
+// Wrapper component for labels controls that needs context access
+interface LabelControlsProps {
+  onOpenPanel: () => void;
+}
+
+function LabelControls({ onOpenPanel }: LabelControlsProps) {
+  const { displaySettings, setDisplaySettings } = useKeyLabels();
+  return (
+    <div className="flex items-center gap-2">
+      <Button variant="outline" size="sm" onClick={onOpenPanel}>
+        <Tag className="w-4 h-4 mr-1" />
+        Labels
+      </Button>
+      <Toggle
+        pressed={displaySettings.showLabelsOnKeys}
+        onPressedChange={pressed => setDisplaySettings({ showLabelsOnKeys: pressed })}
+        size="sm"
+        aria-label="Show labels on keys"
+      >
+        <Eye className="w-4 h-4 mr-1" />
+        Show
+      </Toggle>
     </div>
   );
 }
@@ -1756,12 +1783,7 @@ const LayoutEditor = (props: LayoutEditorProps) => {
                 />
               }
               isColorActive={modeselect !== "keyboard"}
-              secondaryButton={
-                <Button variant="outline" size="sm" onClick={() => setLabelsPanelOpen(true)}>
-                  <Tag className="w-4 h-4 mr-1" />
-                  Labels
-                </Button>
-              }
+              secondaryButton={<LabelControls onOpenPanel={() => setLabelsPanelOpen(true)} />}
               saveContext={onApply}
               destroyContext={() => {
                 log.info("cancelling context: ", props);
