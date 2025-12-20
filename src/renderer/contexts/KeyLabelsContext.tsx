@@ -16,7 +16,14 @@
 
 import React, { createContext, useContext, useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { ipcRenderer } from "electron";
-import { KeyLabel, KeyLabelsStore, GLOBAL_LAYER, MAX_LABEL_LENGTH } from "@Types/keyLabels";
+import {
+  KeyLabel,
+  KeyLabelsStore,
+  KeyLabelDisplaySettings,
+  DEFAULT_DISPLAY_SETTINGS,
+  GLOBAL_LAYER,
+  MAX_LABEL_LENGTH,
+} from "@Types/keyLabels";
 
 interface KeyLabelsContextValue {
   labels: KeyLabel[];
@@ -26,6 +33,8 @@ interface KeyLabelsContextValue {
   importLabels: (data: KeyLabelsStore, mode: "merge" | "replace") => void;
   exportLabels: () => KeyLabelsStore;
   isLoading: boolean;
+  displaySettings: KeyLabelDisplaySettings;
+  setDisplaySettings: (settings: Partial<KeyLabelDisplaySettings>) => void;
 }
 
 interface KeyLabelsProviderProps {
@@ -37,8 +46,15 @@ const KeyLabelsContext = createContext<KeyLabelsContextValue | undefined>(undefi
 
 function KeyLabelsProvider({ children, deviceId }: KeyLabelsProviderProps) {
   const [labels, setLabels] = useState<KeyLabel[]>([]);
+  const [displaySettings, setDisplaySettingsState] = useState<KeyLabelDisplaySettings>(DEFAULT_DISPLAY_SETTINGS);
   const [isLoading, setIsLoading] = useState(true);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const displaySettingsRef = useRef<KeyLabelDisplaySettings>(DEFAULT_DISPLAY_SETTINGS);
+
+  // Keep ref in sync with state for use in callbacks
+  useEffect(() => {
+    displaySettingsRef.current = displaySettings;
+  }, [displaySettings]);
 
   // Load labels on mount or device change
   useEffect(() => {
@@ -47,9 +63,15 @@ function KeyLabelsProvider({ children, deviceId }: KeyLabelsProviderProps) {
       try {
         const data = await ipcRenderer.invoke("key-labels:read", deviceId);
         setLabels(data.labels || []);
+        if (data.displaySettings) {
+          setDisplaySettingsState({ ...DEFAULT_DISPLAY_SETTINGS, ...data.displaySettings });
+        } else {
+          setDisplaySettingsState(DEFAULT_DISPLAY_SETTINGS);
+        }
       } catch {
         // Labels failed to load - fallback to empty
         setLabels([]);
+        setDisplaySettingsState(DEFAULT_DISPLAY_SETTINGS);
       }
       setIsLoading(false);
     };
@@ -57,8 +79,8 @@ function KeyLabelsProvider({ children, deviceId }: KeyLabelsProviderProps) {
   }, [deviceId]);
 
   // Debounced save function
-  const saveLabels = useCallback(
-    (newLabels: KeyLabel[]) => {
+  const saveData = useCallback(
+    (newLabels: KeyLabel[], newDisplaySettings: KeyLabelDisplaySettings) => {
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
       }
@@ -67,11 +89,35 @@ function KeyLabelsProvider({ children, deviceId }: KeyLabelsProviderProps) {
           version: 1,
           deviceId,
           labels: newLabels,
+          displaySettings: newDisplaySettings,
         };
         ipcRenderer.invoke("key-labels:write", deviceId, data);
       }, 300);
     },
     [deviceId],
+  );
+
+  // Wrapper for saving labels that uses current displaySettings
+  const saveLabels = useCallback(
+    (newLabels: KeyLabel[]) => {
+      saveData(newLabels, displaySettingsRef.current);
+    },
+    [saveData],
+  );
+
+  // Update display settings with partial updates
+  const setDisplaySettings = useCallback(
+    (updates: Partial<KeyLabelDisplaySettings>) => {
+      setDisplaySettingsState(prev => {
+        const newSettings = { ...prev, ...updates };
+        setLabels(currentLabels => {
+          saveData(currentLabels, newSettings);
+          return currentLabels;
+        });
+        return newSettings;
+      });
+    },
+    [saveData],
   );
 
   const getLabel = useCallback(
@@ -130,9 +176,17 @@ function KeyLabelsProvider({ children, deviceId }: KeyLabelsProviderProps) {
 
   const importLabels = useCallback(
     (data: KeyLabelsStore, mode: "merge" | "replace") => {
+      const nextDisplaySettings = data.displaySettings
+        ? { ...DEFAULT_DISPLAY_SETTINGS, ...data.displaySettings }
+        : displaySettingsRef.current;
+
+      if (data.displaySettings) {
+        setDisplaySettingsState(nextDisplaySettings);
+      }
+
       if (mode === "replace") {
         setLabels(data.labels);
-        saveLabels(data.labels);
+        saveData(data.labels, nextDisplaySettings);
       } else {
         // Merge: imported labels override existing for same key/layer
         setLabels(prevLabels => {
@@ -149,12 +203,12 @@ function KeyLabelsProvider({ children, deviceId }: KeyLabelsProviderProps) {
           });
 
           const newLabels = Array.from(labelMap.values());
-          saveLabels(newLabels);
+          saveData(newLabels, nextDisplaySettings);
           return newLabels;
         });
       }
     },
-    [saveLabels],
+    [saveData],
   );
 
   const exportLabels = useCallback(
@@ -162,8 +216,9 @@ function KeyLabelsProvider({ children, deviceId }: KeyLabelsProviderProps) {
       version: 1,
       deviceId,
       labels,
+      displaySettings,
     }),
-    [deviceId, labels],
+    [deviceId, labels, displaySettings],
   );
 
   const value = useMemo(
@@ -175,8 +230,10 @@ function KeyLabelsProvider({ children, deviceId }: KeyLabelsProviderProps) {
       importLabels,
       exportLabels,
       isLoading,
+      displaySettings,
+      setDisplaySettings,
     }),
-    [labels, getLabel, setLabel, removeLabel, importLabels, exportLabels, isLoading],
+    [labels, getLabel, setLabel, removeLabel, importLabels, exportLabels, isLoading, displaySettings, setDisplaySettings],
   );
 
   return <KeyLabelsContext.Provider value={value}>{children}</KeyLabelsContext.Provider>;
